@@ -1,5 +1,3 @@
-using System.Windows;
-
 namespace CounterOverlay;
 
 /// <summary>
@@ -62,7 +60,7 @@ public sealed class MouseHookManager : IDisposable
             {
                 // The hook runs on the low-level input thread; marshal onto the UI thread
                 // and return immediately so we never stall global mouse input.
-                Application.Current?.Dispatcher.BeginInvoke(action);
+                System.Windows.Application.Current?.Dispatcher.BeginInvoke(action);
             }
         }
 
