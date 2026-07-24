@@ -5,7 +5,7 @@ namespace CounterOverlay;
 internal static class HotkeyDisplay
 {
     /// <summary>Converts a key press event into a virtual-key code and modifier flags, ignoring bare modifier keys.</summary>
-    public static bool TryCapture(KeyEventArgs e, out uint modifiers, out uint vk)
+    public static bool TryCapture(System.Windows.Input.KeyEventArgs e, out uint modifiers, out uint vk)
     {
         modifiers = 0;
         vk = 0;

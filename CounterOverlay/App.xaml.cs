@@ -5,7 +5,7 @@ using Forms = System.Windows.Forms;
 
 namespace CounterOverlay;
 
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     private OverlayWindow _overlay = null!;
     private HotKeyManager _hotkeys = null!;
