@@ -27,6 +27,27 @@ internal static class HotkeyDisplay
         return vk != 0;
     }
 
+    /// <summary>Maps a WPF mouse press to a bindable extra button, or None for left/right.</summary>
+    public static MouseButtonBinding CaptureMouse(System.Windows.Input.MouseButtonEventArgs e) => e.ChangedButton switch
+    {
+        System.Windows.Input.MouseButton.Middle => MouseButtonBinding.Middle,
+        System.Windows.Input.MouseButton.XButton1 => MouseButtonBinding.XButton1,
+        System.Windows.Input.MouseButton.XButton2 => MouseButtonBinding.XButton2,
+        _ => MouseButtonBinding.None,
+    };
+
+    public static string Format(MouseButtonBinding button) => button switch
+    {
+        MouseButtonBinding.Middle => "Middle Mouse",
+        MouseButtonBinding.XButton1 => "Mouse 4",
+        MouseButtonBinding.XButton2 => "Mouse 5",
+        _ => "(none)",
+    };
+
+    /// <summary>Formats whichever binding is active — a mouse button takes precedence over the key.</summary>
+    public static string Format(uint modifiers, uint vk, MouseButtonBinding button) =>
+        button != MouseButtonBinding.None ? Format(button) : Format(modifiers, vk);
+
     public static string Format(uint modifiers, uint vk)
     {
         if (vk == 0) return "(none)";

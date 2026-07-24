@@ -9,6 +9,7 @@ public partial class App : System.Windows.Application
 {
     private OverlayWindow _overlay = null!;
     private HotKeyManager _hotkeys = null!;
+    private MouseHookManager _mouseHook = null!;
     private AppSettings _settings = null!;
     private Forms.NotifyIcon _trayIcon = null!;
     private SettingsWindow? _settingsWindow;
@@ -24,6 +25,7 @@ public partial class App : System.Windows.Application
 
         _overlay = new OverlayWindow();
         _hotkeys = new HotKeyManager(_overlay);
+        _mouseHook = new MouseHookManager();
         _overlay.ApplySettings(_settings);
         _overlay.Show();
 
@@ -36,8 +38,14 @@ public partial class App : System.Windows.Application
     private void RegisterHotkeys()
     {
         _hotkeys.UnregisterAll();
-        _incrementHotkeyId = _hotkeys.Register(_settings.IncrementModifiers, _settings.IncrementKey, Increment);
-        _resetHotkeyId = _hotkeys.Register(_settings.ResetModifiers, _settings.ResetKey, ResetCounter);
+        _mouseHook.UnbindAll();
+
+        // A mouse binding replaces the keyboard one for that action, so only ever
+        // register whichever of the two the user actually chose.
+        _incrementHotkeyId = BindAction(
+            _settings.IncrementMouseButton, _settings.IncrementModifiers, _settings.IncrementKey, Increment);
+        _resetHotkeyId = BindAction(
+            _settings.ResetMouseButton, _settings.ResetModifiers, _settings.ResetKey, ResetCounter);
 
         if (_incrementHotkeyId == -1 || _resetHotkeyId == -1)
         {
@@ -48,6 +56,18 @@ public partial class App : System.Windows.Application
                 Forms.MessageBoxButtons.OK,
                 Forms.MessageBoxIcon.Warning);
         }
+    }
+
+    /// <summary>Binds one action, returning a non-negative id on success or -1 if a keyboard hotkey was rejected.</summary>
+    private int BindAction(MouseButtonBinding mouseButton, uint modifiers, uint vk, Action action)
+    {
+        if (mouseButton != MouseButtonBinding.None)
+        {
+            _mouseHook.Bind(mouseButton, action);
+            return 0;
+        }
+
+        return _hotkeys.Register(modifiers, vk, action);
     }
 
     private void Increment()
@@ -86,8 +106,14 @@ public partial class App : System.Windows.Application
             return;
         }
 
+        // Pause mouse bindings while Settings is open so rebinding doesn't trigger the old binding.
+        _mouseHook.Suspended = true;
         _settingsWindow = new SettingsWindow(_settings, OnSettingsSaved, ResetCounter, ExitApp);
-        _settingsWindow.Closed += (_, _) => _settingsWindow = null;
+        _settingsWindow.Closed += (_, _) =>
+        {
+            _settingsWindow = null;
+            _mouseHook.Suspended = false;
+        };
         _settingsWindow.Show();
     }
 
@@ -100,6 +126,7 @@ public partial class App : System.Windows.Application
     private void ExitApp()
     {
         _hotkeys.Dispose();
+        _mouseHook.Dispose();
         _trayIcon.Visible = false;
         _trayIcon.Dispose();
         _settings.Left = _overlay.Left;

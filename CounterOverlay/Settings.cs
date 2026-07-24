@@ -10,6 +10,10 @@ public class AppSettings
     public uint ResetModifiers { get; set; } = 0;
     public uint ResetKey { get; set; } = 0x77; // F8
 
+    // A mouse binding, when set, replaces the keyboard binding for that action.
+    public MouseButtonBinding IncrementMouseButton { get; set; } = MouseButtonBinding.None;
+    public MouseButtonBinding ResetMouseButton { get; set; } = MouseButtonBinding.None;
+
     public double Left { get; set; } = 40;
     public double Top { get; set; } = 40;
     public double FontSize { get; set; } = 48;

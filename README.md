@@ -7,6 +7,7 @@ A lightweight always-on-top overlay for Windows that displays a counter over any
 - Transparent, always-on-top overlay that sits above fullscreen/windowed games
 - Click-through by default so it never blocks game input
 - Global hotkeys (work even while the game has focus) for increment and reset
+- Bind either action to a keyboard key **or** an extra mouse button (middle, Mouse 4, Mouse 5)
 - Fully customizable: hotkeys, label text, font size, text color, and position
 - Lives in the system tray — right-click for Settings, Reset, or Exit
 - Settings and overlay position are saved automatically between sessions
@@ -47,7 +48,7 @@ The resulting `.exe` will be under `bin/Release/net8.0-windows/win-x64/publish/`
 1. Launch the app — a small counter overlay appears in the top-left corner, and an icon appears in the system tray.
 2. Press **F7** (default) to increment the counter, and **F8** (default) to reset it. These work globally, even while a game is focused.
 3. Right-click the tray icon and choose **Settings** to:
-   - Rebind either hotkey (click the box, then press your desired key combo)
+   - Rebind either hotkey (click the box, then press your desired key combo, or click middle mouse / Mouse 4 / Mouse 5 to bind that button instead)
    - Change the label, font size, and text color
    - Toggle click-through mode — uncheck it to drag the overlay to a new position, then re-check it before playing
 4. Right-click the tray icon and choose **Exit** to close the app.
@@ -55,4 +56,5 @@ The resulting `.exe` will be under `bin/Release/net8.0-windows/win-x64/publish/`
 ## Notes
 
 - If a hotkey fails to register, it's likely already bound by another running application. Pick a different combination in Settings.
+- Mouse bindings use a low-level mouse hook (Windows has no `RegisterHotKey` equivalent for mouse buttons). The hook only observes presses — it doesn't swallow them, so the click still reaches your game. Left and right click can't be bound, since doing so would interfere with normal clicking. Some anti-cheat systems are wary of input hooks; if that's a concern for a particular game, use a keyboard binding instead.
 - The overlay uses a layered, click-through window so it should display over both windowed and borderless-fullscreen games. True exclusive-fullscreen games may not show any overlay, which is a Windows/DirectX limitation, not specific to this app — switch the game to borderless/windowed mode for the overlay to appear.
