@@ -11,10 +11,21 @@ A lightweight always-on-top overlay for Windows that displays a counter over any
 - Lives in the system tray — right-click for Settings, Reset, or Exit
 - Settings and overlay position are saved automatically between sessions
 
+## Install (no .NET required)
+
+Grab the latest self-contained `CounterOverlay.exe` (or the zip) from the [Releases](../../releases) page and run it — no separate .NET install needed. Windows SmartScreen may warn about an unsigned exe; click "More info" → "Run anyway".
+
+Releases are built automatically by [.github/workflows/release.yml](.github/workflows/release.yml) whenever a tag matching `v*` (e.g. `v1.0.0`) is pushed:
+
+```
+git tag v1.0.0
+git push origin v1.0.0
+```
+
 ## Requirements
 
 - Windows 10/11
-- [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0) (or the SDK, if building from source)
+- Only needed if you build from source instead of using a release: [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 ## Build & Run
 
