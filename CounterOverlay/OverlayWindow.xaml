@@ -1,0 +1,36 @@
+<Window x:Class="CounterOverlay.OverlayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Counter Overlay"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="Manual">
+    <Border x:Name="RootBorder"
+            Background="#66000000"
+            CornerRadius="10"
+            Padding="16,10"
+            BorderBrush="#33FFFFFF"
+            BorderThickness="1">
+        <StackPanel>
+            <TextBlock x:Name="LabelText"
+                       Text="Count"
+                       FontFamily="Segoe UI"
+                       FontSize="14"
+                       Foreground="#CCFFFFFF"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,2"/>
+            <TextBlock x:Name="CountText"
+                       Text="0"
+                       FontFamily="Segoe UI"
+                       FontWeight="Bold"
+                       FontSize="48"
+                       Foreground="White"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Border>
+</Window>
