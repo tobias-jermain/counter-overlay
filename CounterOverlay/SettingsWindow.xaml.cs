@@ -42,7 +42,7 @@ public partial class SettingsWindow : Window
         StatusText.Foreground = System.Windows.Media.Brushes.Orange;
     }
 
-    private void IncrementBox_PreviewKeyDown(object sender, KeyEventArgs e)
+    private void IncrementBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         e.Handled = true;
         if (!HotkeyDisplay.TryCapture(e, out var mod, out var vk)) return;
@@ -52,7 +52,7 @@ public partial class SettingsWindow : Window
         StatusText.Text = "";
     }
 
-    private void ResetBox_PreviewKeyDown(object sender, KeyEventArgs e)
+    private void ResetBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
     {
         e.Handled = true;
         if (!HotkeyDisplay.TryCapture(e, out var mod, out var vk)) return;
